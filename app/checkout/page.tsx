@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Store, CreditCard, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 export default function CheckoutPage() {
@@ -28,6 +28,12 @@ export default function CheckoutPage() {
     expiryDate: '',
     cvv: ''
   });
+
+  useEffect(() => {
+    if (items.length === 0) {
+      router.push('/cart');
+    }
+  }, [items, router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,11 +55,6 @@ export default function CheckoutPage() {
     clearCart();
     router.push('/');
   };
-
-  if (items.length === 0) {
-    router.push('/cart');
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-black text-white">
